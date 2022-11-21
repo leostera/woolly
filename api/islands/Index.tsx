@@ -2,6 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import { Button } from "../components/Button.tsx";
 import Login from "./Login.tsx";
 import Welcome from "./Welcome.tsx";
+import Gibberish from "./Gibberish.tsx";
 
 export default function Index() {
   let [jwt, setJwt] = useState(null);
@@ -27,7 +28,7 @@ export default function Index() {
   } else if (step === "login") {
     return (<div><Login /></div>)
   } else {
-    return (<div> Loading ... </div>)
+    return (<div><Gibberish /></div>)
   }
 
 }
