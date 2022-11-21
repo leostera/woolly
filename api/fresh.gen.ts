@@ -7,8 +7,10 @@ import * as $0 from "./routes/auth/redirect.tsx";
 import * as $1 from "./routes/index.tsx";
 import * as $2 from "./routes/login.tsx";
 import * as $3 from "./routes/login/[name].ts";
-import * as $$0 from "./islands/Login.tsx";
-import * as $$1 from "./islands/Welcome.tsx";
+import * as $$0 from "./islands/Index.tsx";
+import * as $$1 from "./islands/Login.tsx";
+import * as $$2 from "./islands/SaveUserData.tsx";
+import * as $$3 from "./islands/Welcome.tsx";
 
 const manifest = {
   routes: {
@@ -18,8 +20,10 @@ const manifest = {
     "./routes/login/[name].ts": $3,
   },
   islands: {
-    "./islands/Login.tsx": $$0,
-    "./islands/Welcome.tsx": $$1,
+    "./islands/Index.tsx": $$0,
+    "./islands/Login.tsx": $$1,
+    "./islands/SaveUserData.tsx": $$2,
+    "./islands/Welcome.tsx": $$3,
   },
   baseUrl: import.meta.url,
   config,

@@ -1,15 +1,12 @@
 import * as Hooks from "preact/hooks";
-import * as Components from "../components/Button.tsx";
+import { Button } from "../components/Button.tsx";
 
 export default function Welcome({ jwt, user }) {
-  Hooks.useEffect(() => {
-    window.localStorage.setItem("jwt", JSON.stringify(jwt));
-  }, []);
-
+  console.log(jwt, user)
   return (
     <div>
       Welcome <span>{user.displayName}</span>!
+      <Button onClick={() => console.log("hello")}> Say Hello! </Button>
     </div>
   );
-
 }

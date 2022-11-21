@@ -1,4 +1,5 @@
 import { HandlerContext } from "$fresh/server.ts";
+import * as Hooks from "preact/hooks";
 import * as JWT from "https://deno.land/x/djwt@v2.8/mod.ts";
 import Welcome from "../../islands/Welcome.tsx";
 
@@ -51,8 +52,6 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
     jwtKey,
   );
 
-  console.log(jwt, grant, user);
-
   return ctx.render({grant, user, jwt});
 };
 
@@ -63,5 +62,6 @@ export default ({data: { grant, jwt, user }}) => {
       </div>
     );
   }
-  return <Welcome jwt={jwt} user={user} />
+
+  return <SaveUserData jwt={jwt} user={user} />
 }
