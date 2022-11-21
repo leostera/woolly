@@ -3,6 +3,7 @@ import * as Hooks from "preact/hooks";
 import SaveUserData from "../../islands/SaveUserData.tsx";
 import JWT from "../api/jwt.ts";
 
+const MASTODON_APP_SCOPE = `read:accounts write:statuses`;
 const MASTODON_CLIENT_KEY_ID = Deno.env.get(`MASTODON_CLIENT_KEY_ID`);
 const MASTODON_CLIENT_SECRET_KEY = Deno.env.get(`MASTODON_CLIENT_SECRET_KEY`);
 const WOOLLY_URL_TOKEN_REDIRECT = Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`);
@@ -13,6 +14,7 @@ let getGrant = async ({code}) => {
   tokenUrl.searchParams.set("client_secret", MASTODON_CLIENT_SECRET_KEY);
   tokenUrl.searchParams.set("grant_type", "authorization_code");
   tokenUrl.searchParams.set("redirect_uri", WOOLLY_URL_TOKEN_REDIRECT);
+  tokenUrl.searchParams.set("scope", MASTODON_APP_SCOPE);
   tokenUrl.searchParams.set("code", code);
 
   let resp = await fetch(tokenUrl, { method: "POST" });

@@ -6,10 +6,9 @@ export default function Welcome({ jwt, user }) {
     let resp = await fetch("/api/toot", {
       method: "POST",
       headers: {
-        "Authentication": `Bearer ${jwt}`,
+        "Authorization": `Bearer ${jwt}`,
       },
       body: JSON.stringify({
-        jwt,
         status,
         visibility, 
       })
@@ -19,7 +18,7 @@ export default function Welcome({ jwt, user }) {
   }
   return (
     <div>
-      Welcome <span>{user.displayName}</span>!
+      <div>Welcome <span>{user.displayName}</span>!</div>
       <Button onClick={() => toot("hello world", "public")}> Say Hello! </Button>
     </div>
   );
