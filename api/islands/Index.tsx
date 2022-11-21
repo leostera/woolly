@@ -14,14 +14,12 @@ export default function Index() {
     setUser(JSON.parse(window.localStorage.getItem("user") || "null"));
   }, []);
 
-  console.log(jwt, user, (jwt !== null && user !== null));
 
   useEffect(() => {
     if (jwt !== null && user !== null) return setStep("welcome");
     setStep("login");
   }, [jwt, user]);
 
-  console.log(step)
 
   if (step === "welcome") {
     return (<div><Welcome jwt={jwt} user={user} /></div>)

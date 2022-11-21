@@ -13,7 +13,6 @@ export default function Gibberish(props) {
     }
   }
 
-  console.log("offset", strokeDashoffset);
 
   useEffect(() => {
     requestIdRef.current = globalThis.requestAnimationFrame(update);
