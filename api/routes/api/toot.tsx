@@ -34,7 +34,8 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
 
     let {status, visibility} = await req.json();
     return ctx.render();
-  } catch {
+  } catch (e) {
+    console.error(e);
     return new Response("Invalid JWT\n", {status: 401});
   }
 };
