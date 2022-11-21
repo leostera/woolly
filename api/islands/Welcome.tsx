@@ -85,16 +85,6 @@ export default function Welcome({ jwt, user }) {
           alignItems: "center",
         }}>
           <div>Welcome, <span style={{ fontWeight: "700" }}>{user.displayName}</span>!</div>
-          <Button 
-            style={{
-              padding: "0.3rem 0.6rem",
-              borderRadius: "3px",
-              border: action === "wait" ? "1px solid #ababab" : "1px solid black",
-              background: 0,
-            }}
-            disabled={action === "wait"}
-            onClick={() => setAction("send")}
-          >toot</Button>
         </div>
         <hr />
         
@@ -147,6 +137,7 @@ export default function Welcome({ jwt, user }) {
             disabled={action === "wait"}
             onClick={() => setAction("send")}
           >toot</Button>
+          what's on your mind?
         </div>
 
       </div>
