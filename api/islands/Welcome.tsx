@@ -118,8 +118,8 @@ export default function Welcome({ jwt, user }) {
           }}
           onInput={e => updateStatus(e)}
           onKeyDown={e => updateStatus(e)}
-          placeholder="What is on your mind?..."
         >
+          what's on your mind?
         </div>
         <div style={{
           display: "flex",
@@ -137,7 +137,6 @@ export default function Welcome({ jwt, user }) {
             disabled={action === "wait"}
             onClick={() => setAction("send")}
           >toot</Button>
-          what's on your mind?
         </div>
 
       </div>
