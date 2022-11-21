@@ -1,7 +1,7 @@
 import { HandlerContext } from "$fresh/server.ts";
 import * as Hooks from "preact/hooks";
 import * as JWT from "https://deno.land/x/djwt@v2.8/mod.ts";
-import Welcome from "../../islands/Welcome.tsx";
+import SaveUserData from "../../islands/SaveUserData.tsx";
 
 const jwtKey = await crypto.subtle.generateKey(
   { name: "HMAC", hash: "SHA-512" },
