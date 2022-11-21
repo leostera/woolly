@@ -3,10 +3,13 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/auth/redirect.tsx";
-import * as $1 from "./routes/index.tsx";
-import * as $2 from "./routes/login.tsx";
-import * as $3 from "./routes/login/[name].ts";
+import * as $0 from "./routes/api/jwt.ts";
+import * as $1 from "./routes/api/toot.tsx";
+import * as $2 from "./routes/auth/redirect.tsx";
+import * as $3 from "./routes/doodle.tsx";
+import * as $4 from "./routes/index.tsx";
+import * as $5 from "./routes/login.tsx";
+import * as $6 from "./routes/login/[name].ts";
 import * as $$0 from "./islands/Gibberish.tsx";
 import * as $$1 from "./islands/Index.tsx";
 import * as $$2 from "./islands/Login.tsx";
@@ -15,10 +18,13 @@ import * as $$4 from "./islands/Welcome.tsx";
 
 const manifest = {
   routes: {
-    "./routes/auth/redirect.tsx": $0,
-    "./routes/index.tsx": $1,
-    "./routes/login.tsx": $2,
-    "./routes/login/[name].ts": $3,
+    "./routes/api/jwt.ts": $0,
+    "./routes/api/toot.tsx": $1,
+    "./routes/auth/redirect.tsx": $2,
+    "./routes/doodle.tsx": $3,
+    "./routes/index.tsx": $4,
+    "./routes/login.tsx": $5,
+    "./routes/login/[name].ts": $6,
   },
   islands: {
     "./islands/Gibberish.tsx": $$0,

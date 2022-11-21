@@ -1,14 +1,7 @@
 import { HandlerContext } from "$fresh/server.ts";
 import * as Hooks from "preact/hooks";
-import * as JWT from "https://deno.land/x/djwt@v2.8/mod.ts";
 import SaveUserData from "../../islands/SaveUserData.tsx";
-
-const jwtKey = await crypto.subtle.generateKey(
-  { name: "HMAC", hash: "SHA-512" },
-  true,
-  ["sign", "verify"],
-);
-
+import JWT from "../api/jwt.ts";
 
 const MASTODON_CLIENT_KEY_ID = Deno.env.get(`MASTODON_CLIENT_KEY_ID`);
 const MASTODON_CLIENT_SECRET_KEY = Deno.env.get(`MASTODON_CLIENT_SECRET_KEY`);
@@ -46,11 +39,7 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
   let grant = await getGrant({code});
   let user = await getUser(grant);
 
-  const jwt = await JWT.create(
-    { alg: "HS512", typ: "JWT" },
-    { grant, user },
-    jwtKey,
-  );
+  const jwt = await JWT.encode({ grant, user });
 
   return ctx.render({grant, user, jwt});
 };
