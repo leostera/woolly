@@ -5,6 +5,9 @@ export default function Welcome({ jwt, user }) {
   const toot = async (status, visibility) => {
     let resp = await fetch("/api/toot", {
       method: "POST",
+      headers: {
+        "Authentication": `Bearer ${jwt}`,
+      },
       body: JSON.stringify({
         jwt,
         status,
