@@ -7,10 +7,13 @@ const MASTODON_CLIENT_KEY_ID = Deno.env.get(`MASTODON_CLIENT_KEY_ID`);
 const MASTODON_CLIENT_SECRET_KEY = Deno.env.get(`MASTODON_CLIENT_SECRET_KEY`);
 const WOOLLY_URL_TOKEN_REDIRECT = Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`);
 
-let publishToot = async ({ access_token, token_type }, { status, visibility }) => {
+let publishToot = async ({ access_token, token_type }, toot) => {
   let formData = new FormData();
-  formData.append("status", status);
-  formData.append("visibility", visibility);
+  Object.entries(toot).forEach(([k,v]) => {
+    if (v !== null && v !== undefined) {
+      formData.append(k, v)
+    }
+  });
 
   let req = {
     method: "POST",
