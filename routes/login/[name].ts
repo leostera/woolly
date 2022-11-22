@@ -1,5 +1,4 @@
 import { HandlerContext } from "$fresh/server.ts";
-import * as Cookie from "https://deno.land/std/http/cookie.ts";
 import * as Supabase from "https://esm.sh/@supabase/supabase-js";
 
 const MASTODON_APP_SCOPE = `read:accounts write:statuses`;

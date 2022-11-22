@@ -1,5 +1,5 @@
+import * as Supabase from "https://esm.sh/@supabase/supabase-js";
 import { HandlerContext } from "$fresh/server.ts";
-import * as Cookie from "https://deno.land/std/http/cookie.ts";
 import SaveUserData from "../../islands/SaveUserData.tsx";
 import JWT from "../api/jwt.ts";
 
