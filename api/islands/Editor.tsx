@@ -68,9 +68,9 @@ export default function Editor({ jwt, user }) {
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
       // Promise.resolve({ id: 1, content: status })
-      Promise.reject("something went wrong!")
-        // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
-        // toot(jwt, { status, visibility, in_reply_to_id: replyId })
+      // Promise.reject("something went wrong!")
+      // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
+      toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
           if (toot.id) {
             setToots((old) => [...old, toot]);
