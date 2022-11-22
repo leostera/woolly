@@ -20,7 +20,7 @@ const toot = async (jwt, { status, visibility, in_reply_to_id }) => {
 export default function Editor({ jwt, user }) {
   const inputRef = Hooks.useRef(null);
   const [toots, setToots] = Hooks.useState([
-    {
+    /*    {
       id: 1,
       content: "hello world! this is a fake toot",
       created_at: "Tue Nov 22 08:21:23 CET 2022",
@@ -32,6 +32,7 @@ export default function Editor({ jwt, user }) {
       `,
       created_at: "Tue Nov 22 08:21:23 CET 2022",
     },
+    */
   ]);
   const [action, setAction] = Hooks.useState("wait");
   const [replyId, setReplyId] = Hooks.useState(null);
@@ -64,7 +65,7 @@ export default function Editor({ jwt, user }) {
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
       // Promise.resolve({ id: 1, content: status })
-        toot(jwt, {status, visibility: "direct", in_reply_to_id: replyId})
+      toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
         // toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
           setToots((old) => [...old, toot]);
