@@ -9,9 +9,9 @@ const WOOLLY_URL_TOKEN_REDIRECT = Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`);
 
 let publishToot = async ({ access_token, token_type }, toot) => {
   let formData = new FormData();
-  Object.entries(toot).forEach(([k,v]) => {
+  Object.entries(toot).forEach(([k, v]) => {
     if (v !== null && v !== undefined) {
-      formData.append(k, v)
+      formData.append(k, v);
     }
   });
 
@@ -24,7 +24,7 @@ let publishToot = async ({ access_token, token_type }, toot) => {
   };
   let resp = await fetch("https://mas.to/api/v1/statuses", req);
   return await resp.json();
-}
+};
 
 export const handler = async (req: Request, ctx: HandlerContext): Response => {
   try {
@@ -37,6 +37,6 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
     return new Response(JSON.stringify(toot));
   } catch (e) {
     console.error(e);
-    return new Response("Invalid JWT\n", {status: 401});
+    return new Response("Invalid JWT\n", { status: 401 });
   }
 };

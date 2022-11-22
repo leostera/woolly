@@ -65,8 +65,8 @@ export default function Editor({ jwt, user }) {
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
       // Promise.resolve({ id: 1, content: status })
-      toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
-        // toot(jwt, { status, visibility, in_reply_to_id: replyId })
+      // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
+      toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
           setToots((old) => [...old, toot]);
           setVisibility("unlisted");
