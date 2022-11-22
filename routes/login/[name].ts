@@ -49,8 +49,6 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   } else {
     const app = await createApp({ instanceHost });
 
-    console.log(app);
-
     const { error } = await supabase.from("apps").insert({
       instance_host: instanceHost,
       client_key: app.client_id,
@@ -73,7 +71,12 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
 async function createApp({ instanceHost }) {
   const body = new FormData();
   body.append("client_name", "woolly");
-  body.append("redirect_uris", WOOLLY_URL_WELCOME_URL);
+  body.append(
+    "redirect_uris",
+    `${WOOLLY_URL_WELCOME_URL}
+https://woolly.deno.dev/auth/redirect
+`,
+  );
   body.append("scopes", MASTODON_APP_SCOPE);
   body.append("website", WOOLLY_URL);
   const response = await fetch(`https://${instanceHost}/api/v1/apps`, {

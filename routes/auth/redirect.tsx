@@ -34,7 +34,6 @@ const getUser = async ({ access_token, token_type }) => {
     },
   );
   const user = await resp.json();
-  const url = new URL(user.url);
   return {
     url: user.url,
     username: user.username,
