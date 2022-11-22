@@ -26,9 +26,9 @@ const getGrant = async ({ instanceHost, code }) => {
   return await resp.json();
 };
 
-const getUser = async ({ access_token, token_type }) => {
+const getUser = async (instanceHost, { access_token, token_type }) => {
   const resp = await fetch(
-    "https://mas.to/api/v1/accounts/verify_credentials",
+    `https://${instanceHost}/api/v1/accounts/verify_credentials`,
     {
       headers: { "Authorization": `${token_type} ${access_token}` },
     },
@@ -48,7 +48,7 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
   const instanceHost = url.searchParams.get("state");
 
   const grant = await getGrant({ instanceHost, code });
-  const user = await getUser(grant);
+  const user = await getUser(instanceHost, grant);
 
   const jwt = await JWT.encode({ grant, user });
 
