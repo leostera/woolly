@@ -1,13 +1,10 @@
 import { HandlerContext } from "$fresh/server.ts";
-import * as Hooks from "preact/hooks";
 import JWT from "../api/jwt.ts";
-import SaveUserData from "../../islands/SaveUserData.tsx";
 
-const MASTODON_CLIENT_KEY_ID = Deno.env.get(`MASTODON_CLIENT_KEY_ID`);
-const MASTODON_CLIENT_SECRET_KEY = Deno.env.get(`MASTODON_CLIENT_SECRET_KEY`);
-const WOOLLY_URL_TOKEN_REDIRECT = Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`);
-
-const publishToot = async ({ access_token, token_type }, toot) => {
+const publishToot = async (
+  { grant: { access_token }, user: { url } },
+  toot,
+) => {
   const formData = new FormData();
   Object.entries(toot).forEach(([k, v]) => {
     if (v !== null && v !== undefined) {
@@ -22,7 +19,8 @@ const publishToot = async ({ access_token, token_type }, toot) => {
     },
     body: formData,
   };
-  const resp = await fetch("https://mas.to/api/v1/statuses", req);
+  const instanceHost = new URL(url).host;
+  const resp = await fetch(`https://${instanceHost}/api/v1/statuses`, req);
   return await resp.json();
 };
 
@@ -33,7 +31,7 @@ export const handler = async (req: Request, ctx: HandlerContext): Response => {
     const grant = await JWT.decode(jwt);
 
     const tootDesc = await req.json();
-    const toot = await publishToot(grant.grant, tootDesc);
+    const toot = await publishToot(grant, tootDesc);
     return new Response(JSON.stringify(toot));
   } catch (e) {
     console.error(e);

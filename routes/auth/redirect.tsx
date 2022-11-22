@@ -1,4 +1,5 @@
 import { HandlerContext } from "$fresh/server.ts";
+import * as Cookie from "https://deno.land/std/http/cookie.ts";
 import SaveUserData from "../../islands/SaveUserData.tsx";
 import JWT from "../api/jwt.ts";
 
@@ -12,8 +13,8 @@ const MASTODON_CLIENT_SECRET_KEY =
 const WOOLLY_URL_TOKEN_REDIRECT =
   (Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`) || "");
 
-let getGrant = async ({ code }) => {
-  let tokenUrl = new URL(`https://mas.to/oauth/token`);
+const getGrant = async ({ instanceHost, code }) => {
+  const tokenUrl = new URL(`https://${instanceHost}/oauth/token`);
   tokenUrl.searchParams.set("client_id", MASTODON_CLIENT_KEY_ID);
   tokenUrl.searchParams.set("client_secret", MASTODON_CLIENT_SECRET_KEY);
   tokenUrl.searchParams.set("grant_type", "authorization_code");
@@ -21,15 +22,19 @@ let getGrant = async ({ code }) => {
   tokenUrl.searchParams.set("scope", MASTODON_APP_SCOPE);
   tokenUrl.searchParams.set("code", code);
 
-  let resp = await fetch(tokenUrl, { method: "POST" });
+  const resp = await fetch(tokenUrl, { method: "POST" });
   return await resp.json();
 };
 
-let getUser = async ({ access_token, token_type }) => {
-  let resp = await fetch("https://mas.to/api/v1/accounts/verify_credentials", {
-    headers: { "Authorization": `${token_type} ${access_token}` },
-  });
-  let user = await resp.json();
+const getUser = async ({ access_token, token_type }) => {
+  const resp = await fetch(
+    "https://mas.to/api/v1/accounts/verify_credentials",
+    {
+      headers: { "Authorization": `${token_type} ${access_token}` },
+    },
+  );
+  const user = await resp.json();
+  const url = new URL(user.url);
   return {
     url: user.url,
     username: user.username,
@@ -39,11 +44,12 @@ let getUser = async ({ access_token, token_type }) => {
 };
 
 export const handler = async (req: Request, ctx: HandlerContext): Response => {
-  let url = new URL(req.url);
-  let code = url.searchParams.get("code");
+  const url = new URL(req.url);
+  const code = url.searchParams.get("code");
+  const instanceHost = url.searchParams.get("state");
 
-  let grant = await getGrant({ code });
-  let user = await getUser(grant);
+  const grant = await getGrant({ instanceHost, code });
+  const user = await getUser(grant);
 
   const jwt = await JWT.encode({ grant, user });
 
