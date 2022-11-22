@@ -80,13 +80,16 @@ export default function Editor({ jwt, user }) {
   }, [action]);
 
   Hooks.useEffect(() => {
-    if (action === "wait" && status.length > 0 && status.length < 500) {
+    if (action === "wait" && status.length > 0) {
       setAction("ready");
     }
   }, [status]);
 
   Hooks.useEffect(() => {
     if (action === "ready" && status.length === 0) {
+      setAction("wait");
+    }
+    if (action === "ready" && status.length > 500) {
       setAction("wait");
     }
   }, [status]);
