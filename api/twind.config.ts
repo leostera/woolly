@@ -6,6 +6,7 @@ export default {
   theme: {
     colors: {
       blue: colors.blue,
+      red: colors.red,
       black: colors.black,
       gray: colors.gray,
       green: colors.green,

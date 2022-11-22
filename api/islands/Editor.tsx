@@ -19,6 +19,8 @@ const toot = async (jwt, { status, visibility, in_reply_to_id }) => {
 
 export default function Editor({ jwt, user }) {
   const inputRef = Hooks.useRef(null);
+  const [error, setError] = Hooks.useState(false);
+
   const [toots, setToots] = Hooks.useState([
     /*    {
       id: 1,
@@ -60,21 +62,29 @@ export default function Editor({ jwt, user }) {
     }
   }, [action]);
 
-  Hooks.useEffect(async () => {
+  Hooks.useEffect(() => {
     if (action == "send") {
+      setError(false);
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
       // Promise.resolve({ id: 1, content: status })
-      // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
-      toot(jwt, { status, visibility, in_reply_to_id: replyId })
+      Promise.reject("something went wrong!")
+        // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
+        // toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
-          setToots((old) => [...old, toot]);
-          setVisibility("unlisted");
-          setReplyId(toot.id);
-          setStatus("");
+          if (toot.id) {
+            setToots((old) => [...old, toot]);
+            setVisibility("unlisted");
+            setReplyId(toot.id);
+            setStatus("");
+            setAction("ready");
+            inputRef.current.value = "";
+            inputRef.current.focus();
+          }
+        })
+        .catch((error) => {
+          setError(error);
           setAction("ready");
-          inputRef.current.value = "";
-          inputRef.current.focus();
         });
     }
   }, [action]);
@@ -97,7 +107,6 @@ export default function Editor({ jwt, user }) {
   Hooks.useEffect(() => {
     const tId = setTimeout(() => {
       if (inputRef.current) {
-        console.log(inputRef.current);
         inputRef.current.focus();
       }
     }, 0);
@@ -124,7 +133,6 @@ export default function Editor({ jwt, user }) {
       </div>
 
       {toots.map((toot, idx) => {
-        console.log(toot);
         return (
           <div
             class={`
@@ -165,6 +173,38 @@ export default function Editor({ jwt, user }) {
         placeholder="what's on your mind?"
       >
       </textarea>
+
+      {error
+        ? (
+          <div
+            class={`w-full rounded p-5 my-2 border(1 solid red-300) text-red-700 bg-red-200`}
+          >
+            <div class={`float-right`}>
+              <button
+                class=""
+                onClick={(_e) => setError(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div class="my-1">
+              <b>Something went wrong:</b> <span>{error}</span>
+            </div>
+            <div>
+              Try again in a few seconds. If the problem persists, reach out to
+              {" "}
+              <a class="my-2" href="https://mas.to/@leostera" target="_blank">
+                <b>@leostera</b>
+              </a>{" "}
+              on Mastodon for help or file an issue in Woolly's{" "}
+              <a href="https://github.com/ostera/woolly/issues">
+                <b>Issue Tracker</b>
+              </a>
+            </div>
+          </div>
+        )
+        : null}
+
       <div
         style={{
           display: "flex",

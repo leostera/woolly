@@ -12,8 +12,6 @@ export default function Login() {
   const [disabled, setDisabled] = useState(true);
   useEffect(() => setDisabled(href === "#"), [href]);
 
-  console.log(loginId, href, disabled);
-
   return (
     <section class="max-w-screen-md mx-auto my-16 px(4 sm:6 md:8) space-y-12">
       <div class="md:flex items-center">
