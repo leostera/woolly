@@ -13,14 +13,41 @@ const MASTODON_CLIENT_SECRET_KEY =
 const WOOLLY_URL_TOKEN_REDIRECT =
   (Deno.env.get(`WOOLLY_URL_TOKEN_REDIRECT`) || "");
 
+const WOOLLY_SUPABASE_URL = Deno.env.get(`WOOLLY_SUPABASE_URL`);
+const WOOLLY_SUPABASE_KEY = Deno.env.get(`WOOLLY_SUPABASE_KEY`);
+
+const options = {
+  schema: "public",
+  headers: { "x-my-custom-header": "my-app-name" },
+  autoRefreshToken: true,
+  persistSession: true,
+  detectSessionInUrl: true,
+};
+
+const supabase = Supabase.createClient(
+  WOOLLY_SUPABASE_URL,
+  WOOLLY_SUPABASE_KEY,
+  options,
+);
+
 const getGrant = async ({ instanceHost, code }) => {
   const tokenUrl = new URL(`https://${instanceHost}/oauth/token`);
-  tokenUrl.searchParams.set("client_id", MASTODON_CLIENT_KEY_ID);
-  tokenUrl.searchParams.set("client_secret", MASTODON_CLIENT_SECRET_KEY);
   tokenUrl.searchParams.set("grant_type", "authorization_code");
   tokenUrl.searchParams.set("redirect_uri", WOOLLY_URL_TOKEN_REDIRECT);
   tokenUrl.searchParams.set("scope", MASTODON_APP_SCOPE);
   tokenUrl.searchParams.set("code", code);
+
+  const { data, error } = await supabase.from("apps")
+    .select()
+    .eq("instance_host", instanceHost);
+
+  if (error) {
+    console.error("Error when logging into", instanceHost, error);
+    return new Response("Something went wrong", { status: 500 });
+  }
+
+  tokenUrl.searchParams.set("client_id", data[0].client_key);
+  tokenUrl.searchParams.set("client_secret", data[0].client_secret);
 
   const resp = await fetch(tokenUrl, { method: "POST" });
   return await resp.json();
@@ -34,6 +61,7 @@ const getUser = async (instanceHost, { access_token, token_type }) => {
     },
   );
   const user = await resp.json();
+  console.log(`Logged in ${user.url}`);
   return {
     url: user.url,
     username: user.username,
