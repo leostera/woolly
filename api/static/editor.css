@@ -1,0 +1,4 @@
+a.mention, a.hashtag {
+  font-weight: bold;
+  color: rgba(59,130,246,var(--tw-border-opacity));
+}

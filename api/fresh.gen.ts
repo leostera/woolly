@@ -7,14 +7,14 @@ import * as $0 from "./routes/api/jwt.ts";
 import * as $1 from "./routes/api/toot.tsx";
 import * as $2 from "./routes/auth/redirect.tsx";
 import * as $3 from "./routes/doodle.tsx";
-import * as $4 from "./routes/index.tsx";
-import * as $5 from "./routes/login.tsx";
+import * as $4 from "./routes/home.tsx";
+import * as $5 from "./routes/index.tsx";
 import * as $6 from "./routes/login/[name].ts";
-import * as $$0 from "./islands/Gibberish.tsx";
-import * as $$1 from "./islands/Index.tsx";
-import * as $$2 from "./islands/Login.tsx";
-import * as $$3 from "./islands/SaveUserData.tsx";
-import * as $$4 from "./islands/Welcome.tsx";
+import * as $$0 from "./islands/Editor.tsx";
+import * as $$1 from "./islands/Gibberish.tsx";
+import * as $$2 from "./islands/Home.tsx";
+import * as $$3 from "./islands/Login.tsx";
+import * as $$4 from "./islands/SaveUserData.tsx";
 
 const manifest = {
   routes: {
@@ -22,16 +22,16 @@ const manifest = {
     "./routes/api/toot.tsx": $1,
     "./routes/auth/redirect.tsx": $2,
     "./routes/doodle.tsx": $3,
-    "./routes/index.tsx": $4,
-    "./routes/login.tsx": $5,
+    "./routes/home.tsx": $4,
+    "./routes/index.tsx": $5,
     "./routes/login/[name].ts": $6,
   },
   islands: {
-    "./islands/Gibberish.tsx": $$0,
-    "./islands/Index.tsx": $$1,
-    "./islands/Login.tsx": $$2,
-    "./islands/SaveUserData.tsx": $$3,
-    "./islands/Welcome.tsx": $$4,
+    "./islands/Editor.tsx": $$0,
+    "./islands/Gibberish.tsx": $$1,
+    "./islands/Home.tsx": $$2,
+    "./islands/Login.tsx": $$3,
+    "./islands/SaveUserData.tsx": $$4,
   },
   baseUrl: import.meta.url,
   config,
