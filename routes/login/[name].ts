@@ -49,8 +49,9 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
   } else {
     const app = await createApp({ instanceHost });
 
+    console.log(app);
+
     const { error } = await supabase.from("apps").insert({
-      id: app.id,
       instance_host: instanceHost,
       client_key: app.client_id,
       client_secret: app.client_secret,
@@ -63,7 +64,7 @@ export const handler = async (req: Request, _ctx: HandlerContext): Response => {
       return new Response("Something went wrong", { status: 500 });
     }
 
-    url.searchParams.set("client_id", data[0].client_app_id);
+    url.searchParams.set("client_id", app.client_id);
   }
 
   return Response.redirect(url, 302);
