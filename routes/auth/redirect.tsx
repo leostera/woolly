@@ -50,6 +50,12 @@ const getGrant = async ({ instanceHost, code }) => {
   tokenUrl.searchParams.set("client_secret", data[0].client_secret);
 
   const resp = await fetch(tokenUrl, { method: "POST" });
+
+  if (resp.status >= 400 && resp.status < 600) {
+    const error = await resp.text();
+    throw new Error(`Could not create oauth token: ${error}`);
+  }
+
   return await resp.json();
 };
 
@@ -60,6 +66,12 @@ const getUser = async (instanceHost, { access_token, token_type }) => {
       headers: { "Authorization": `${token_type} ${access_token}` },
     },
   );
+
+  if (resp.status >= 400 && resp.status < 600) {
+    const error = await resp.text();
+    throw new Error(`Could not verify credentials due to: ${error}`);
+  }
+
   const user = await resp.json();
   console.log(`Logged in ${user.url}`);
   return {
