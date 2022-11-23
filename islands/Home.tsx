@@ -2,7 +2,7 @@ import { useEffect, useState } from "preact/hooks";
 import Editor from "./Editor.tsx";
 import Gibberish from "./Gibberish.tsx";
 
-export default function Index() {
+export default function Home({ defaultToots }) {
   const [jwt, setJwt] = useState(null);
   const [user, setUser] = useState(null);
   const [step, setStep] = useState("loading");
@@ -21,7 +21,7 @@ export default function Index() {
   if (step === "welcome") {
     return (
       <div>
-        <Editor jwt={jwt} user={user} />
+        <Editor jwt={jwt} user={user} defaultToots={defaultToots} />
       </div>
     );
   }

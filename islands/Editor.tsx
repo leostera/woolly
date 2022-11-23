@@ -17,25 +17,11 @@ const toot = async (jwt, { status, visibility, in_reply_to_id }) => {
   return json;
 };
 
-export default function Editor({ jwt, user }) {
+export default function Editor({ jwt, user, defaultToots = [] }) {
   const inputRef = Hooks.useRef(null);
   const [error, setError] = Hooks.useState(false);
 
-  const [toots, setToots] = Hooks.useState([
-    /*    {
-      id: 1,
-      content: "hello world! this is a fake toot",
-      created_at: "Tue Nov 22 08:21:23 CET 2022",
-    },
-    {
-      id: 1,
-      content: `
-<p>My apologies :) the mode needed to be <a href="https://mas.to/tags/direct" class="mention hashtag" rel="tag">#<span>direct</span></a>, not <a href="https://mas.to/tags/private" class="mention hashtag" rel="tag">#<span>private</span></a>.</p>
-      `,
-      created_at: "Tue Nov 22 08:21:23 CET 2022",
-    },
-    */
-  ]);
+  const [toots, setToots] = Hooks.useState(defaultToots);
   const [action, setAction] = Hooks.useState("wait");
   const [replyId, setReplyId] = Hooks.useState(null);
   const [visibility, setVisibility] = Hooks.useState("public");
@@ -67,10 +53,10 @@ export default function Editor({ jwt, user }) {
       setError(false);
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
-      // Promise.resolve({ id: 1, content: status })
-      // Promise.reject("something went wrong!")
-      // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
-      toot(jwt, { status, visibility, in_reply_to_id: replyId })
+      Promise.resolve({ id: 1, content: status, spoiler_text })
+        // Promise.reject("something went wrong!")
+        // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
+        // toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
           if (toot.id) {
             setToots((old) => [...old, toot]);
@@ -114,17 +100,20 @@ export default function Editor({ jwt, user }) {
   }, [inputRef]);
 
   return (
-    <div class="flex flex-col max-w-full w-1/2 justify-center align-center p-3 mx-auto">
-      <div class="flex flex-row justify-between py-4">
+    <div class="flex flex-col max-w-3xl justify-center align-center p-3 mx-auto font">
+      <div class="flex flex-row justify-between align-center items-center py-4">
         <Welcome user={user} />
         <Button
           class={`
-            py-2
-            px-5
+            h-10
+            px-4
             rounded
             font-bold
             border(2 solid blue-500)
+            text-sm
             text-blue-500
+            hover:text-white
+            hover:bg-blue-500
           `}
           onClick={() => setAction("new")}
         >
@@ -132,47 +121,56 @@ export default function Editor({ jwt, user }) {
         </Button>
       </div>
 
-      {toots.map((toot, idx) => {
-        return (
-          <div
-            class={`
+      <div
+        class={`
+            toot
+            text-xl
+            leading-8
+            font-serif
+            `}
+      >
+        {toots.map((toot, idx) => {
+          return (
+            <div
+              class={`
                 w-full
                 max-h-screen
-                p-4
-                my-2
+                py-2
+                px-4
                 rounded
-                border(1 solid gray-500)
                 flex
                 flex-col
             `}
-          >
-            <div dangerouslySetInnerHTML={{ __html: toot.content }} />
-            <div class={`pt-3 flex flex-row justify-end text-gray-500`}>
-              <a href={toot.url} target="_blank">
-                #{idx + 1}
-              </a>
+            >
+              <div
+                class={`pt-3 flex flex-row justify-end text-xl text-gray-400`}
+              >
+                <a href={toot.url} target="_blank">
+                  #{idx + 1}
+                </a>
+              </div>
+              <div dangerouslySetInnerHTML={{ __html: toot.content }} />
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
 
-      <textarea
-        tabIndex={1}
-        ref={inputRef}
-        class={`
+        <textarea
+          tabIndex={1}
+          ref={inputRef}
+          class={`
             w-full
             max-h-screen
             p-4
             my-2
-            rounded
-            border(1 solid gray-500)
+            outline-none
           `}
-        onInput={(e) => updateStatus(e)}
-        onKeyDown={(e) => updateStatus(e)}
-        rows={10}
-        placeholder="what's on your mind?"
-      >
-      </textarea>
+          onInput={(e) => updateStatus(e)}
+          onKeyDown={(e) => updateStatus(e)}
+          rows={10}
+          placeholder="What's on your mind?"
+        >
+        </textarea>
+      </div>
 
       {error
         ? (
@@ -205,23 +203,19 @@ export default function Editor({ jwt, user }) {
         )
         : null}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "end",
-          alignItems: "center",
-        }}
-      >
+      <div class="flex flex-row justify-end align-center items-center">
         <Button
           class={`
+            h-10
             py-2
-            px-5
+            px-4
             rounded
+            text-sm
             font-bold
             border(2 solid ${action === "ready" ? "blue-500" : "gray-900"})
             ${action === "ready" ? "text-blue-500" : "text-gray-900"}
             ${action === "ready" ? "opacity-100" : "opacity-30"}
+            ${action === "ready" ? "hover:text-white hover:bg-blue-500" : ""}
           `}
           disabled={action === "wait"}
           onClick={() => setAction("send")}

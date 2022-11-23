@@ -1,4 +1,12 @@
 a.mention, a.hashtag {
   font-weight: bold;
   color: rgba(59,130,246,var(--tw-border-opacity));
+  text-decoration: none;
+}
+
+.toot {
+  letter-spacing: -0.003em;
+  margin-top: 0.86em;
+  word-break: break-word;
+  font-weight: 400;
 }
