@@ -17,7 +17,7 @@ const toot = async (jwt, { status, visibility, in_reply_to_id }) => {
   return json;
 };
 
-export default function Editor({ jwt, user, defaultToots = [] }) {
+export default function Editor({ jwt, user, defaultToots = [], api }) {
   const inputRef = Hooks.useRef(null);
   const [error, setError] = Hooks.useState(false);
 
@@ -53,10 +53,10 @@ export default function Editor({ jwt, user, defaultToots = [] }) {
       setError(false);
       setAction("wait");
       // NOTE(@ostera): cheap way of mocking the responses:
-      Promise.resolve({ id: 1, content: status, spoiler_text })
-        // Promise.reject("something went wrong!")
-        // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
-        // toot(jwt, { status, visibility, in_reply_to_id: replyId })
+      // Promise.resolve({ id: 1, content: status })
+      // Promise.reject("something went wrong!")
+      // toot(jwt, { status, visibility: "direct", in_reply_to_id: replyId })
+      toot(jwt, { status, visibility, in_reply_to_id: replyId })
         .then((toot) => {
           if (toot.id) {
             setToots((old) => [...old, toot]);
