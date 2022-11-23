@@ -82,5 +82,11 @@ https://woolly.deno.dev/auth/redirect
     method: "POST",
     body,
   });
+
+  if (response.status >= 400) {
+    const error = await response.text();
+    throw new Error(`Error when creating app for ${instanceHost}: ${error}`);
+  }
+
   return await response.json();
 }
